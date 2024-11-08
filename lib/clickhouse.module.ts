@@ -1,5 +1,4 @@
-import { ClickHouseClientConfigOptions } from '@clickhouse/client';
-import { createClient } from '@clickhouse/client';
+import { ClickHouseClientConfigOptions, createClient } from '@clickhouse/client';
 import { DynamicModule, Module, ModuleMetadata, Provider, Type } from '@nestjs/common';
 
 export type ClickHouseModuleOptions = {
@@ -9,6 +8,7 @@ export type ClickHouseModuleOptions = {
 
 export const CLICKHOUSE_ASYNC_INSTANCE_TOKEN = 'CLICKHOUSE_INSTANCE_TOKEN';
 export const CLICKHOUSE_ASYNC_MODULE_OPTIONS = 'CLICKHOUSE_MODULE_OPTIONS';
+export const CLICKHOUSE_DEFAULT_ALIAS = 'CLICKHOUSE_DEFAULT_ALIAS';
 
 export interface ClickHouseModuleOptionsFactory {
   createClickHouseOptions(): Promise<ClickHouseModuleOptions> | ClickHouseModuleOptions;
@@ -37,6 +37,20 @@ export class ClickHouseModule {
       module: ClickHouseModule,
       providers: clients,
       exports: clients,
+    };
+  }
+
+  static forRoot(options: ClickHouseClientConfigOptions): DynamicModule {
+    const client = {
+      provide: CLICKHOUSE_DEFAULT_ALIAS,
+      useValue: createClient(options),
+    };
+
+    return {
+      global: true,
+      module: ClickHouseModule,
+      providers: [client],
+      exports: [client],
     };
   }
 

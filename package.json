@@ -1,9 +1,10 @@
 {
   "name": "nestjs-clickhouse-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ClickHouse Client Module for NestJS",
   "author": "Kobylinskii Maksim",
   "license": "MIT",
+  "homepage": "https://github.com/kobylinskii-m/nestjs-clickhouse-client",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
     "postbuild": "copy README.md dist && copy package.json dist && copy LICENSE dist",
